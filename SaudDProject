@@ -2,51 +2,62 @@ import tkinter as tk
 from tkinter import messagebox
 
 
+# Global money variable
+money = 15000  # Initial money
 
 def select_product():
-    email = email_entry.get()  # email thingy :P
-    if not email:  # need email, if no email kaboom
+    global money  # To modify the global variable money
+
+    email = email_entry.get()  # Get the email inputted.
+
+    # Add an a and condition to make sure the email has a @ sign
+    if not email or '@' not in email:  # Email requirement (up)
         messagebox.showwarning("Input Error", "Please enter a valid email.")
         return
 
-
-    money = 15  # self explantory :+
     messagebox.showinfo("Logged In", f"Logged In! Your cash is: {money} SAR")
 
-    # i aint explaining this >:)
+    # the product is the product selected.
     product = product_var.get()
 
-    # product selection (i was bored)
-    if product == "A":
+    # Product Selection
+    # Using if, elif and else for product selection to check which product is chosen
+    if product == "A" and money >= 25000:  # Added and condition to check if the user has enough money for the karts
         result = "You have bought a Rotax Mini Kart!"
-    elif product == "B":
+        money -= 25000
+    elif product == "B" and money >= 35000:
         result = "You have bought a Rotax Junior Kart!"
-    elif product == "C":
+        money -= 35000
+    elif product == "C" and money >= 45000:
         result = "You have bought a Rotax Senior Kart!"
-    elif product == "D":
+        money -= 45000
+    elif product == "D" and money >= 300:  # Sparco Karting Gloves
         result = "You have bought Sparco Karting Gloves!"
-    elif product == "E":
+        money -= 300
+    elif product == "E" and money >= 450:  # Sparco Karting Boots
         result = "You have bought Sparco Karting Boots!"
-    elif product == "F":
+        money -= 450
+    elif product == "F" and (money >= 3500000 or money == 0):  # Special condition for Porsche 911 GT3 R
         result = "You have bought a Porsche 911 GT3 R!"
-    elif product == "G":
+        money -= 3500000
+    elif product == "G" and money >= 3000000:
         result = "You have bought a BMW GT3 CS!"
+        money -= 3000000
     else:
-        result = "Invalid product selection."
+        result = "Invalid product selection or insufficient funds."
 
-    # Show result in a message box
-    messagebox.showinfo("Purchase Result", result)
+    # Show the purchase result/pop up
+    messagebox.showinfo("Purchase Result", f"{result}\nYour remaining balance is: {money} SAR")
 
-# window
+
+# Creating the Window for the app
 root = tk.Tk()
 root.title("Assesto Racing Gear")
-
 
 email_label = tk.Label(root, text="Enter your email to continue:")
 email_label.pack(pady=5)
 email_entry = tk.Entry(root, width=30)
 email_entry.pack(pady=5)
-
 
 product_label = tk.Label(root, text="What product do you want? Select it!")
 product_label.pack(pady=5)
@@ -65,11 +76,11 @@ product_options = [
 
 for text, value in product_options:
     radio_button = tk.Radiobutton(root, text=text, variable=product_var, value=value)
-    radio_button.pack(anchor="w") # complex things
+    radio_button.pack(anchor="w")  # Locking In the radio button/input and using anchor
 
-# little button to submit and MAKE THE MONEY >:)
+# Submit button to finalize your purchase!
 submit_button = tk.Button(root, text="Submit", command=select_product)
 submit_button.pack(pady=20)
 
-# gui loop
+# Menu Loop!
 root.mainloop()
